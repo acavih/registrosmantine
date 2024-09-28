@@ -1,0 +1,22 @@
+{
+  "extends": ["mantine", "plugin:@next/next/recommended", "plugin:jest/recommended"],
+  "plugins": ["testing-library", "jest", "@stylistic/eslint-plugin"],
+  "overrides": [
+    {
+      "files": ["**/?(*.)+(spec|test).[jt]s?(x)"],
+      "extends": ["plugin:testing-library/react"]
+    }
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "import/extensions": "off",
+    "@stylistic/indent": ["error", 4],
+    "react/jsx-indent-props": ["error", 4],
+    "@typescript-eslint/dot-notation": "off",
+    "react/jsx-closing-tag-location": "off",
+    "no-promise-executor-return": "off"
+  }
+}

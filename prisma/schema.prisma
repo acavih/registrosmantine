@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  username String @unique
+  password String
+}
+
+model attentions {
+  id                          String                        @id @default(uuid())
+  note                        String
+  date                        DateTime
+  pendent                     String
+  pendentDate                 DateTime?
+  archived                    Boolean                       @default(false)
+  partnerId                   String
+  placeAttentionId            String?
+  partners                    partners                      @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  resources_placeattentions   resources_placeattentions?    @relation(fields: [placeAttentionId], references: [id])
+  resources_attentionsreasons resources_attentionsreasons[] @relation("AttentionToAttentionsReasons")
+  resources_derivedfrom       resources_derivedfrom[]       @relation("AttentionToDerivedFrom")
+  resources_derivedto         resources_derivedto[]         @relation("AttentionToDerivedTo")
+  resources_formation         resources_formation[]         @relation("AttentionToFormation")
+  resources_projects          resources_projects[]          @relation("AttentionToProjects")
+  resources_typeattentions    resources_typeattentions[]    @relation("AttentionToTypeAttentions")
+  resources_volunteer         resources_volunteer[]         @relation("AttentionToVolunteer")
+}
+
+model partners {
+  id                      String                  @id @default(uuid())
+  code                    String
+  name                    String
+  surname                 String
+  email                   String
+  phone                   String
+  notes                   String
+  sipcard                 String
+  birthdate               DateTime?
+  pendent                 String
+  sexId                   String
+  partnerStateId          String
+  nationalityId           String
+  residencyId             String
+  howDidKnowusId          String
+  yearDidKnowusId         String
+  attentions              attentions[]
+  resources_howdidknowus  resources_howdidknowus  @relation(fields: [howDidKnowusId], references: [id])
+  resources_nationalities resources_nationalities @relation(fields: [nationalityId], references: [id])
+  resources_partnerstates resources_partnerstates @relation(fields: [partnerStateId], references: [id])
+  resources_residencies   resources_residencies   @relation(fields: [residencyId], references: [id])
+  resources_sex           resources_sex           @relation(fields: [sexId], references: [id])
+  resources_yeardidknowus resources_yeardidknowus @relation(fields: [yearDidKnowusId], references: [id])
+}
+
+model resources_attentionsreasons {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  attentions attentions[] @relation("AttentionToAttentionsReasons")
+}
+
+model resources_derivedfrom {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  attentions attentions[] @relation("AttentionToDerivedFrom")
+}
+
+model resources_derivedto {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  attentions attentions[] @relation("AttentionToDerivedTo")
+}
+
+model resources_formation {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  attentions attentions[] @relation("AttentionToFormation")
+}
+
+model resources_howdidknowus {
+  id       String     @id @default(uuid())
+  name     String     @unique
+  partners partners[]
+}
+
+model resources_nationalities {
+  id       String     @id @default(uuid())
+  name     String     @unique
+  partners partners[]
+}
+
+model resources_partnerstates {
+  id       String     @id @default(uuid())
+  name     String     @unique
+  partners partners[]
+}
+
+model resources_placeattentions {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  attentions attentions[]
+}
+
+model resources_projects {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  attentions attentions[] @relation("AttentionToProjects")
+}
+
+model resources_residencies {
+  id       String     @id @default(uuid())
+  name     String     @unique
+  partners partners[]
+}
+
+model resources_sex {
+  id       String     @id @default(uuid())
+  name     String     @unique
+  partners partners[]
+}
+
+model resources_typeattentions {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  attentions attentions[] @relation("AttentionToTypeAttentions")
+}
+
+model resources_volunteer {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  attentions attentions[] @relation("AttentionToVolunteer")
+}
+
+model resources_yeardidknowus {
+  id       String     @id @default(uuid())
+  name     String     @unique
+  partners partners[]
+}
