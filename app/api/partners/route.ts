@@ -21,28 +21,19 @@ const partnerSchema = y.object({
 });
 
 export const POST = async (request: NextRequest) => {
-    const data: any = Object.fromEntries(await request.formData());
+    const {nationality, partnerState, residency, howdidknowus, yeardidknowus, sex, ...data}: any = Object.fromEntries(await request.formData());
     // const data = await partnerSchema.validate(body);
 
     console.log(data)
     
     await dbClient.partners.create({
-        data: {
-            name: data.name,
-            surname: data.surname,
-            email: data.email,
-            phone: data.phone,
-            sipcard: data.sipcard,
-            notes: data.notes,
-            birthdate: data.birthdate,
-            code: data.code,
-            pendent: data.pendent,
-            resources_nationalities: { connect: { id: data.nationality as string } },
-            resources_partnerstates: { connect: { id: data.partnerState as string } },
-            resources_residencies: { connect: { id: data.residency as string } },
-            resources_howdidknowus: { connect: { id: data.howdidknowus as string } },
-            resources_yeardidknowus: { connect: { id: data.yeardidknowus as string } },
-            resources_sex: { connect: { id: data.sex as string } },
+        data: {...data,
+            resources_nationalities: { connect: { id: nationality as string } },
+            resources_partnerstates: { connect: { id: partnerState as string } },
+            resources_residencies: { connect: { id: residency as string } },
+            resources_howdidknowus: { connect: { id: howdidknowus as string } },
+            resources_yeardidknowus: { connect: { id: yeardidknowus as string } },
+            resources_sex: { connect: { id: sex as string } },
         },
     });
     return NextResponse.json({ message: 'ok' });

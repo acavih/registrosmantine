@@ -4,6 +4,7 @@ import { Button, Group, Table, Text, TextInput, Title } from '@mantine/core';
 import { useState } from 'react';
 import { FaCaretDown } from 'react-icons/fa';
 import AddPartnerForm from './AddPartnerForm';
+import Link from 'next/link';
 
 function PartnerRow({ element }) {
     const [expanded, setExpanded] = useState(false);
@@ -18,7 +19,7 @@ function PartnerRow({ element }) {
                 <Table.Td>{element.email}</Table.Td>
                 <Table.Td>{element.phone}</Table.Td>
                 <Table.Td>
-                    <Button size="xs">Ver socio</Button>
+                    <Button size="xs" component={Link} href={'/partners/' + element.id}>Ver socio</Button>
                 </Table.Td>
             </Table.Tr>
             {expanded && <Table.Tr>

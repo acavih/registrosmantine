@@ -2,6 +2,7 @@
 
 import { AppShell, Burger, Button, Group, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -22,12 +23,13 @@ export default function PrivateLayout({ children }: { children: any }) {
         >
             <AppShell.Header bg="blue" c="#fff">
                 <Group h="100%" px="md">
-                    <Burger opened={false} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-                    <Burger opened={false} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+                    <Burger color='white' opened={false} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+                    <Burger color='white' opened={false} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
                     Registros
                     <Group ml="auto">
-                        <Button onClick={() => {
-                            router.push('/');
+                        <Button onClick={async () => {
+                            await signOut({redirect: false})
+                            router.refresh();
                         }}>Logout</Button>
                     </Group>
                 </Group>

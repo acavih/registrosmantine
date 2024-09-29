@@ -4,11 +4,13 @@ import { AppShell, Button, Card, Container, Group, rem, TextInput, Text, Title, 
 import { useHeadroom } from '@mantine/hooks';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
     const pinned = useHeadroom({ fixedAt: 120 });
     const router = useRouter()
 
+    const [unable, setUnable] = useState(false)
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [loginMessage, setLoginMessage] = useState('');
@@ -16,7 +18,23 @@ export default function LoginPage() {
     async function login(email: string, password: string) {
         // setLoginMessage('Credenciales incorrectas');
         console.log({ name: email, password });
-        router.push('/partners')
+        const result = await signIn('credentials', {
+            redirect: false,
+            email, password
+        })
+        console.log(result)
+        if (result) {
+            if (result.status < 400) {
+                router.refresh()
+            } else {
+                setUnable(false)
+                setLoginMessage(result.error ?? 'Error interno')
+            }
+        } else {
+            setUnable(false)
+            setLoginMessage('Error interno')
+        }
+        // router.push('/partners')
     }
 
     return (
@@ -29,12 +47,12 @@ export default function LoginPage() {
 
             <AppShell.Main pt={`calc(${rem(60)} + var(--mantine-spacing-md))`}>
                 <Container size="sm">
-                    {loginMessage.length > 0 && <Alert variant="light" color="red" title={loginMessage} />}
                     <form
                         method="post"
                         onSubmit={async (e) => {
                             e.preventDefault();
 
+                            setUnable(true)
                             setEmailError('');
                             setPasswordError('');
                             setLoginMessage('');
@@ -55,8 +73,10 @@ export default function LoginPage() {
                         <Card>
                             <Card.Section>
                                 <Title>Acceder al sistema</Title>
-                                <Text>Rellene los datos</Text>
                             </Card.Section>
+                            {loginMessage.length > 0 && <Card.Section my={20}>
+                                <Alert variant="light" color="red" title={loginMessage} />
+                            </Card.Section>}
                             <Card.Section>
                                 <TextInput name="email" label="Email" error={emailError} />
                                 <TextInput name="password" type="password" label="Contraseña" error={passwordError} />
@@ -64,7 +84,7 @@ export default function LoginPage() {
                             <Card.Section>
                                 <Group mt="md" justify="flex-end">
                                     <Button variant="subtle" color="gray">Reset</Button>
-                                    <Button type="submit">Acceder</Button>
+                                    <Button disabled={unable} type="submit">Acceder</Button>
                                 </Group>
                             </Card.Section>
                         </Card>

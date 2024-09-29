@@ -11,13 +11,18 @@ export default function ResourceInput({ typeResource, ...inputProps }: ResourceI
         []
     );
 
+    if (loading) {
+        return (
+            <></>
+        )
+    }
+
     return (
         <Select
             {...inputProps}
-            disabled={loading}
-            placeholder={loading ? 'Cargando...' : 'Seleccione...'}
+            placeholder={'Seleccione...'}
             searchable
-            data={data?.list.map(a => ({ value: a.id.toString(), label: a.name })) ?? []}
+            data={data?.list.map(a => ({value: a.id.toString(), label: a.name}))  }
         />
     );
 }

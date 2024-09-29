@@ -21,8 +21,10 @@ export default function AddPartnerForm() {
                         const result = await post('/api/partners', fd);
                         if (!response.ok) {
                             console.dir(response);
+                            return
                         }
                         console.log(result);
+                        close()
                     }}
                 >
                     <TextInput label="Código" name="code" />
@@ -31,7 +33,7 @@ export default function AddPartnerForm() {
                     <TextInput label="Correo electrónico" name="email" />
                     <TextInput label="Teléfono" name="phone" />
                     <TextInput label="Tarjeta SIP" name="sipcard" />
-                    <DatePickerInput  label="Fecha de nacimiento" name='bornDate' />
+                    <DatePickerInput  label="Fecha de nacimiento" name='birthdate' />
                     <Textarea label="Observaciones" name="notes" />
                     <Textarea label="Pendiente" name="pendent" />
                     <ResourceInput typeResource="sex" label="Sexo" name="sex" />
