@@ -1,7 +1,8 @@
-import { Button, Group, Modal, TextInput } from '@mantine/core';
+import { Button, Group, Modal, Textarea, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useFetch } from 'use-http';
 import ResourceInput from '@/components/resources/ResourceInput';
+import { DatePickerInput  } from "@mantine/dates";
 
 export default function AddPartnerForm() {
     const [opened, { open, close }] = useDisclosure();
@@ -30,6 +31,9 @@ export default function AddPartnerForm() {
                     <TextInput label="Correo electrónico" name="email" />
                     <TextInput label="Teléfono" name="phone" />
                     <TextInput label="Tarjeta SIP" name="sipcard" />
+                    <DatePickerInput  label="Fecha de nacimiento" name='bornDate' />
+                    <Textarea label="Observaciones" name="notes" />
+                    <Textarea label="Pendiente" name="pendent" />
                     <ResourceInput typeResource="sex" label="Sexo" name="sex" />
                     <ResourceInput typeResource="partnerState" label="Eastado del socio" name="partnerState" />
                     <ResourceInput typeResource="nationality" label="Nacionalidad" name="nationality" />

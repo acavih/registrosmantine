@@ -21,8 +21,11 @@ const partnerSchema = y.object({
 });
 
 export const POST = async (request: NextRequest) => {
-    const body = await request.formData();
-    const data = await partnerSchema.validate(body);
+    const data: any = Object.fromEntries(await request.formData());
+    // const data = await partnerSchema.validate(body);
+
+    console.log(data)
+    
     await dbClient.partners.create({
         data: {
             name: data.name,
